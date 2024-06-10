@@ -8,17 +8,40 @@ My Personal API for things I want to API.
 
 ## Getting started
 
+### Clone the repository
+
 ```sh
 git clone git@github.com:syntaqx/api.git && cd "$_"
 ```
 
-## Development
+### Starting the environment
 
 ```sh
 docker compose up -d --build
 ```
 
+> __Note__: You also may prefer to develop using `go` directly, however the
+> docker container includes all the necessary dependencies to build and run the
+> application with all functionality. Some functionality may be disabled without
+> dependent packages on your system.
+
+#### Binding to `localhost`
+
+In order to access the container ports over `localhost` you'll need to override the default
+`compose.yml` port values and specify your preferred host port. To use the default
+values, or quickly populate the file, simply:
+
+```sh
+cp compose.override.example.yml compose.override.yml
+```
+
 > [!NOTE]
-> To bind to host ports, use the Docker Compose Overrides and adjust them to
-> your liking.
-> `cp compose.override.example.yml compose.override.yml`
+> Any changes made to the `compose.override.yml` will be ignored by git, to feel free to
+> use this to make any environment-specific changes or overrides without affecting others
+> local settings.
+
+Then (re)start your containers with the new port bindings:
+
+```sh
+docker compose up -d
+```
