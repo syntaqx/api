@@ -41,7 +41,7 @@ jobs:
           name: code-coverage-report
       -
         name: Validate codecov.yml
-        run: curl --data-binary @.codecov.yml https://codecov.io/validate
+        run: cat .codecov.yml | curl --data-binary @- https://codecov.io/validate
       -
         name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
