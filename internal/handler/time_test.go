@@ -14,12 +14,14 @@ import (
 func TestTimeHandler_CurrentTime(t *testing.T) {
 	handler := NewTimeHandler()
 
+	router := chi.NewRouter()
+	handler.RegisterRoutes(router)
+
+	rr := httptest.NewRecorder()
+
 	req, err := http.NewRequest("GET", "/time", nil)
 	assert.NoError(t, err)
 
-	rr := httptest.NewRecorder()
-	router := chi.NewRouter()
-	handler.RegisterRoutes(router)
 	router.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusOK, rr.Code)
