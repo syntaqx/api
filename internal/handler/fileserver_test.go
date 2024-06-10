@@ -29,3 +29,14 @@ func TestFileServer_FileNotFound(t *testing.T) {
 	// Check the response status code
 	assert.Equal(t, http.StatusNotFound, rr.Code)
 }
+
+func TestFileServer_Panic(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+
+	r := chi.NewRouter()
+	FileServer(r, "/*", http.Dir("."))
+}
