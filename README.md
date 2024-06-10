@@ -11,7 +11,7 @@ My Personal API for things I want to API.
 ### Clone the repository
 
 ```sh
-git clone git@github.com:syntaqx/api.git && cd "$_"
+git clone git@github.com:syntaqx/api && cd "$(basename "$_" .git)"
 ```
 
 ### Starting the environment
