@@ -19,7 +19,7 @@ func TestTimeHandler_CurrentTime(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	router := chi.NewRouter()
-	router.Get("/time", handler.CurrentTime)
+	handler.RegisterRoutes(router)
 	router.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusOK, rr.Code)
