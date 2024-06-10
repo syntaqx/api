@@ -20,10 +20,11 @@ git clone git@github.com:syntaqx/api.git && cd "$_"
 docker compose up -d --build
 ```
 
-> __Note__: You also may prefer to develop using `go` directly, however the
-> docker container includes all the necessary dependencies to build and run the
-> application with all functionality. Some functionality may be disabled without
-> dependent packages on your system.
+> [!NOTE]
+> You may prefer to develop using `go` directly. You can reference the `Dockerfile`
+> for necessary steps to run the code on your system, but given the steps will be
+> different for each host operating system and their versions, this route will
+> remain undocumented.
 
 #### Binding to `localhost`
 
