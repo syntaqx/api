@@ -1,0 +1,48 @@
+package handler
+
+import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestHealthHandler_GetHealth(t *testing.T) {
+	handler := NewHealthHandler()
+
+	req, err := http.NewRequest("GET", "/healthz", nil)
+	assert.NoError(t, err)
+
+	rr := httptest.NewRecorder()
+	handler.GetHealth(rr, req)
+
+	assert.Equal(t, http.StatusOK, rr.Code)
+
+	expectedResponse := &HealthResponse{Status: http.StatusText(http.StatusOK)}
+	actualResponse := &HealthResponse{}
+	err = json.NewDecoder(rr.Body).Decode(actualResponse)
+
+	assert.NoError(t, err)
+	assert.Equal(t, expectedResponse, actualResponse)
+}
+
+func TestHealthHandler_GetReady(t *testing.T) {
+	handler := NewHealthHandler()
+
+	req, err := http.NewRequest("GET", "/readiness", nil)
+	assert.NoError(t, err)
+
+	rr := httptest.NewRecorder()
+	handler.GetReady(rr, req)
+
+	assert.Equal(t, http.StatusOK, rr.Code)
+
+	expectedResponse := &ReadyResponse{Status: http.StatusText(http.StatusOK)}
+	actualResponse := &ReadyResponse{}
+	err = json.NewDecoder(rr.Body).Decode(actualResponse)
+
+	assert.NoError(t, err)
+	assert.Equal(t, expectedResponse, actualResponse)
+}
