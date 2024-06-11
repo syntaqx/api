@@ -6,17 +6,23 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestHealthHandler_GetHealth(t *testing.T) {
 	handler := NewHealthHandler()
 
+	router := chi.NewRouter()
+	handler.RegisterRoutes(router)
+
 	req, err := http.NewRequest("GET", "/healthz", nil)
 	assert.NoError(t, err)
 
 	rr := httptest.NewRecorder()
 	handler.GetHealth(rr, req)
+
+	router.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusOK, rr.Code)
 
@@ -31,11 +37,16 @@ func TestHealthHandler_GetHealth(t *testing.T) {
 func TestHealthHandler_GetReady(t *testing.T) {
 	handler := NewHealthHandler()
 
+	router := chi.NewRouter()
+	handler.RegisterRoutes(router)
+
 	req, err := http.NewRequest("GET", "/readiness", nil)
 	assert.NoError(t, err)
 
 	rr := httptest.NewRecorder()
 	handler.GetReady(rr, req)
+
+	router.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusOK, rr.Code)
 
