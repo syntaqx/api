@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"encoding/json"
 	"net/http"
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/render"
 )
 
 type TimeHandler struct {
@@ -23,11 +23,11 @@ type TimeResponse struct {
 	CurrentTime string `json:"currentTime"`
 }
 
-func (h *TimeHandler) CurrentTime(w http.ResponseWriter, r *http.Request) {
-	currentTime := time.Now().UTC().Format(time.RFC3339)
-	response := TimeResponse{CurrentTime: currentTime}
+func (resp *TimeResponse) Render(w http.ResponseWriter, r *http.Request) error {
+	return nil
+}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(response)
+func (h *TimeHandler) CurrentTime(w http.ResponseWriter, r *http.Request) {
+	render.Status(r, http.StatusOK)
+	render.Render(w, r, &TimeResponse{CurrentTime: time.Now().UTC().Format(time.RFC3339)})
 }

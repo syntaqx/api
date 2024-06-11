@@ -29,6 +29,7 @@ func main() {
 
 	// Initialize handlers
 	rootHandler := handler.NewRootHandler()
+	healthHandler := handler.NewHealthHandler()
 	timeHandler := handler.NewTimeHandler()
 
 	r := chi.NewRouter()
@@ -41,6 +42,7 @@ func main() {
 
 	// Register routes
 	rootHandler.RegisterRoutes(r)
+	healthHandler.RegisterRoutes(r)
 	timeHandler.RegisterRoutes(r)
 
 	// Static files
