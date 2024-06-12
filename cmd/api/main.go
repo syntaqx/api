@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -16,6 +18,10 @@ import (
 )
 
 func main() {
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
 	logger, err := zap.NewProduction()
 	if err != nil {
 		panic(fmt.Errorf("unable to initialize logger: %s", err))
@@ -57,8 +63,11 @@ func main() {
 
 	logger.Info("http server started", zap.String("addr", srv.Addr))
 	if err := srv.ListenAndServe(); err != nil {
-		if err != http.ErrServerClosed {
+		if !errors.Is(err, http.ErrServerClosed) {
 			logger.Error("http server closed unexpectedly", zap.Error(err))
 		}
 	}
+
+	logger.Info("http server shutting down...")
+	srv.Shutdown(ctx)
 }
