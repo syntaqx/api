@@ -1,6 +1,7 @@
 services:
 
   api:
+    image: syntaqx/api
     build: .
     ports:
       - 8080
