@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/syntaqx/env"
 	"github.com/syntaqx/zapchi"
 	"go.uber.org/zap"
 
@@ -28,10 +29,7 @@ func main() {
 	}
 	defer logger.Sync()
 
-	port, ok := os.LookupEnv("PORT")
-	if !ok {
-		port = "8080"
-	}
+	port := env.GetWithFallback("PORT", "8080")
 
 	// Initialize handlers
 	rootHandler := handler.NewRootHandler()

@@ -10,6 +10,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
+github.com/syntaqx/env v0.0.1 h1:zYUtYWVT7AqtaDivnJ1KzDL9ZTcOs34RZN2mzXGDxfg=
+github.com/syntaqx/env v0.0.1/go.mod h1:WdKDB086KxlmVBKlXSy2QgOv+vvlhMlTPV5q6pPRDeU=
 github.com/syntaqx/zapchi v0.0.0-20240610193050-79db48c38f2d h1:tp+q480wh2Ftxnsuj0PttDDwqARvwYFDUVPvRJk4+8c=
 github.com/syntaqx/zapchi v0.0.0-20240610193050-79db48c38f2d/go.mod h1:DCIMDPOzIkb019Ne6xfVlDr1p5iV+0Y/SjMVtXD8iAM=
 go.uber.org/goleak v1.3.0 h1:2K3zAYmnTNqV73imy9J1T3WC+gmCePx2hEGkimedGto=
