@@ -15,7 +15,9 @@ import (
 	"github.com/syntaqx/zapchi"
 	"go.uber.org/zap"
 
+	"github.com/syntaqx/api/internal/config"
 	"github.com/syntaqx/api/internal/handler"
+	"github.com/syntaqx/api/internal/service"
 )
 
 func main() {
@@ -23,18 +25,25 @@ func main() {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
+	// Load dotenv environment variables
+	_ = env.Load()
+
 	logger, err := zap.NewProduction()
 	if err != nil {
 		panic(fmt.Errorf("unable to initialize logger: %s", err))
 	}
 	defer logger.Sync()
 
-	port := env.GetWithFallback("PORT", "8080")
+	cfg := config.NewConfig()
+
+	// Initialize services
+	weatherService := service.NewWeatherService(cfg)
 
 	// Initialize handlers
 	rootHandler := handler.NewRootHandler()
 	healthHandler := handler.NewHealthHandler()
 	timeHandler := handler.NewTimeHandler()
+	weatherHandler := handler.NewWeatherHandler(weatherService)
 
 	r := chi.NewRouter()
 
@@ -48,6 +57,7 @@ func main() {
 	rootHandler.RegisterRoutes(r)
 	healthHandler.RegisterRoutes(r)
 	timeHandler.RegisterRoutes(r)
+	weatherHandler.RegisterRoutes(r)
 
 	// Static files
 	workDir, _ := os.Getwd()
@@ -55,7 +65,7 @@ func main() {
 	handler.FileServer(r, "/", filesDir)
 
 	srv := &http.Server{
-		Addr:    net.JoinHostPort("", port),
+		Addr:    net.JoinHostPort("", cfg.Port),
 		Handler: r,
 	}
 
