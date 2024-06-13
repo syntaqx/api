@@ -15,7 +15,7 @@ func NewRootHandler() *RootHandler {
 }
 
 func (h *RootHandler) RegisterRoutes(r chi.Router) {
-	r.Get("/", h.Root)
+	r.Get("/", h.GetRoot)
 }
 
 type RootResponse struct {
@@ -26,7 +26,15 @@ func (resp *RootResponse) Render(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-func (h *RootHandler) Root(w http.ResponseWriter, r *http.Request) {
+// GetRoot godoc
+// @Summary      Index
+// @Description  get the index route
+// @Tags         root
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  RootResponse
+// @Router       / [get]
+func (h *RootHandler) GetRoot(w http.ResponseWriter, r *http.Request) {
 	render.Status(r, http.StatusOK)
 	render.Render(w, r, &RootResponse{Message: "Hello, World!"})
 }

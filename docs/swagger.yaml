@@ -1,5 +1,25 @@
 basePath: /
 definitions:
+  handler.HealthResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  handler.ReadyResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  handler.RootResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  handler.TimeResponse:
+    properties:
+      currentTime:
+        type: string
+    type: object
   model.Weather:
     properties:
       description:
@@ -19,6 +39,66 @@ info:
   title: Syntaqx Personal API
   version: "1.0"
 paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: get the index route
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.RootResponse'
+      summary: Index
+      tags:
+      - root
+  /healthz:
+    get:
+      consumes:
+      - application/json
+      description: get the current service health
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.HealthResponse'
+      summary: Health check
+      tags:
+      - health
+  /readiness:
+    get:
+      consumes:
+      - application/json
+      description: get the current service readiness
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.ReadyResponse'
+      summary: Readiness check
+      tags:
+      - health
+  /time:
+    get:
+      consumes:
+      - application/json
+      description: Get the current time
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.TimeResponse'
+      summary: Get the current time
+      tags:
+      - time
   /weater:
     get:
       consumes:

@@ -27,6 +27,14 @@ func (resp *HealthResponse) Render(w http.ResponseWriter, r *http.Request) error
 	return nil
 }
 
+// GetHealth godoc
+// @Summary      Health check
+// @Description  get the current service health
+// @Tags         health
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  HealthResponse
+// @Router       /healthz [get]
 func (h *HealthHandler) GetHealth(w http.ResponseWriter, r *http.Request) {
 	render.Status(r, http.StatusOK)
 	render.Render(w, r, &HealthResponse{Status: http.StatusText(http.StatusOK)})
@@ -40,6 +48,14 @@ func (resp *ReadyResponse) Render(w http.ResponseWriter, r *http.Request) error 
 	return nil
 }
 
+// GetHealth godoc
+// @Summary      Readiness check
+// @Description  get the current service readiness
+// @Tags         health
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  ReadyResponse
+// @Router       /readiness [get]
 func (h *HealthHandler) GetReady(w http.ResponseWriter, r *http.Request) {
 	render.Status(r, http.StatusOK)
 	render.Render(w, r, &ReadyResponse{Status: http.StatusText(http.StatusOK)})
