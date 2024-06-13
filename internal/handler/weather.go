@@ -24,6 +24,14 @@ func (h *WeatherHandler) RegisterRoutes(r chi.Router) {
 	r.Get("/weather", h.GetWeather)
 }
 
+// @Summary      Get the current weather
+// @Description  Get the current weather
+// @Router       /weater [get]
+// @Tags         weather
+// @Accept       json
+// @Produce      json
+// @Param        location   query  string  false  "Location Name"
+// @Success      200  {object}  model.Weather
 func (h *WeatherHandler) GetWeather(w http.ResponseWriter, r *http.Request) {
 	location := r.URL.Query().Get("location")
 	if location == "" {

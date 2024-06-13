@@ -1,0 +1,42 @@
+basePath: /
+definitions:
+  model.Weather:
+    properties:
+      description:
+        type: string
+      location:
+        type: string
+      temperature:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: My Personal API
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+  title: Syntaqx Personal API
+  version: "1.0"
+paths:
+  /weater:
+    get:
+      consumes:
+      - application/json
+      description: Get the current weather
+      parameters:
+      - description: Location Name
+        in: query
+        name: location
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Weather'
+      summary: Get the current weather
+      tags:
+      - weather
+swagger: "2.0"

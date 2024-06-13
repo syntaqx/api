@@ -9,14 +9,12 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"github.com/syntaqx/env"
-	"github.com/syntaqx/zapchi"
 	"go.uber.org/zap"
 
 	"github.com/syntaqx/api/internal/config"
 	"github.com/syntaqx/api/internal/handler"
+	"github.com/syntaqx/api/internal/router"
 	"github.com/syntaqx/api/internal/service"
 )
 
@@ -45,13 +43,8 @@ func main() {
 	timeHandler := handler.NewTimeHandler()
 	weatherHandler := handler.NewWeatherHandler(weatherService)
 
-	r := chi.NewRouter()
-
-	// Base middleware
-	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
-	r.Use(zapchi.Logger(logger, "router"))
-	r.Use(middleware.Recoverer)
+	// Initialize router
+	r := router.NewRouter(logger)
 
 	// Register routes
 	rootHandler.RegisterRoutes(r)

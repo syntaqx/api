@@ -1,0 +1,64 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "My Personal API",
+        "title": "Syntaqx Personal API",
+        "contact": {},
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/license/mit"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/weater": {
+            "get": {
+                "description": "Get the current weather",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "weather"
+                ],
+                "summary": "Get the current weather",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Location Name",
+                        "name": "location",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Weather"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.Weather": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "temperature": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
