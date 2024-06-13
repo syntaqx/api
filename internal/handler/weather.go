@@ -9,6 +9,9 @@ import (
 	"github.com/syntaqx/api/internal/service"
 )
 
+// DefaultLocation is the default location to use if none is provided.
+const DefaultLocation = "84095"
+
 type WeatherHandler struct {
 	service service.WeatherService
 }
@@ -24,7 +27,7 @@ func (h *WeatherHandler) RegisterRoutes(r chi.Router) {
 func (h *WeatherHandler) GetWeather(w http.ResponseWriter, r *http.Request) {
 	location := r.URL.Query().Get("location")
 	if location == "" {
-		location = "84095"
+		location = DefaultLocation
 	}
 
 	weather, err := h.service.GetWeather(location)
