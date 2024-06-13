@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/syntaqx/api/internal/config"
 	"github.com/syntaqx/api/internal/model"
@@ -16,7 +17,8 @@ type WeatherService interface {
 }
 
 type weatherService struct {
-	apiKey string
+	apiHost string
+	apiKey  string
 }
 
 // Assert weatherService implements WeatherService interface at comiple time.
@@ -25,25 +27,35 @@ var _ WeatherService = (*weatherService)(nil)
 // NewWeatherService creates a new weather service.
 func NewWeatherService(cfg *config.Config) *weatherService {
 	return &weatherService{
-		apiKey: cfg.WeatherAPIKey,
+		apiHost: cfg.WeatherAPIHost,
+		apiKey:  cfg.WeatherAPIKey,
 	}
 }
 
 type WeatherAPIResponse struct {
-	Location struct {
-		Name string `json:"name"`
-	} `json:"location"`
-	Current struct {
-		TempF     float64 `json:"temp_f"`
-		TempC     float64 `json:"temp_c"`
-		Condition struct {
-			Text string `json:"text"`
-		}
-	} `json:"current"`
+	Location WeatherAPIResponseLocation `json:"location"`
+	Current  WeatherAPIResponseCurrent  `json:"current"`
+}
+
+type WeatherAPIResponseLocation struct {
+	Name string `json:"name"`
+}
+
+type WeatherAPIResponseCurrent struct {
+	TempF     float64                            `json:"temp_f"`
+	TempC     float64                            `json:"temp_c"`
+	Condition WeatherAPIResponseCurrentCondition `json:"condition"`
+}
+
+type WeatherAPIResponseCurrentCondition struct {
+	Text string `json:"text"`
 }
 
 func (s *weatherService) GetWeather(location string) (*model.Weather, error) {
-	url := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s", s.apiKey, location)
+	encodedLocation := url.QueryEscape(location)
+	url := fmt.Sprintf("%s/v1/current.json?key=%s&q=%s", s.apiHost, s.apiKey, encodedLocation)
+
+	fmt.Println(url)
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -52,7 +64,6 @@ func (s *weatherService) GetWeather(location string) (*model.Weather, error) {
 	defer resp.Body.Close()
 
 	var response WeatherAPIResponse
-
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 		return nil, err
 	}
