@@ -53,11 +53,17 @@ type WeatherAPIResponseCurrentCondition struct {
 
 func (s *weatherService) GetWeather(location string) (*model.Weather, error) {
 	encodedLocation := url.QueryEscape(location)
-	url := fmt.Sprintf("%s/v1/current.json?key=%s&q=%s", s.apiHost, s.apiKey, encodedLocation)
 
-	fmt.Println(url)
+	u, _ := url.Parse(s.apiHost)
+	u.Path = "/v1/current.json"
 
-	resp, err := http.Get(url)
+	q := u.Query()
+	q.Set("key", s.apiKey)
+	q.Set("q", encodedLocation)
+
+	u.RawQuery = q.Encode()
+
+	resp, err := http.Get(u.String())
 	if err != nil {
 		return nil, err
 	}
