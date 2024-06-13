@@ -34,7 +34,10 @@ func NewRouter(config *config.Config, logger *zap.Logger) chi.Router {
 	r.Use(zapchi.Logger(logger, "router"))
 	r.Use(middleware.Recoverer)
 
-	host := net.JoinHostPort(config.Host, config.Port)
+	host := config.Host
+	if config.Host == "" {
+		host = net.JoinHostPort(config.Host, config.Port)
+	}
 
 	docs.SwaggerInfo.Host = host
 
