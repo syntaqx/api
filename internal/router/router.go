@@ -35,7 +35,7 @@ func NewRouter(config *config.Config, logger *zap.Logger) chi.Router {
 	r.Use(middleware.Recoverer)
 
 	host := config.Host
-	if config.Host == "" {
+	if config.Host == "" || config.Host == "localhost" {
 		host = net.JoinHostPort(config.Host, config.Port)
 	}
 
