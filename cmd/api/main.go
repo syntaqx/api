@@ -44,7 +44,7 @@ func main() {
 	weatherHandler := handler.NewWeatherHandler(weatherService)
 
 	// Initialize router
-	r := router.NewRouter(logger)
+	r := router.NewRouter(cfg, logger)
 
 	// Register routes
 	rootHandler.RegisterRoutes(r)
