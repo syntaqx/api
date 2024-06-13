@@ -9,12 +9,22 @@ import (
 	"github.com/syntaqx/api/internal/model"
 )
 
-type WeatherService struct {
+//go:generate go run github.com/matryer/moq -pkg mock -out ./mock/weather_service.go . WeatherService
+
+type WeatherService interface {
+	GetWeather(location string) (*model.Weather, error)
+}
+
+type weatherService struct {
 	apiKey string
 }
 
-func NewWeatherService(cfg *config.Config) *WeatherService {
-	return &WeatherService{
+// Assert weatherService implements WeatherService interface at comiple time.
+var _ WeatherService = (*weatherService)(nil)
+
+// NewWeatherService creates a new weather service.
+func NewWeatherService(cfg *config.Config) *weatherService {
+	return &weatherService{
 		apiKey: cfg.WeatherAPIKey,
 	}
 }
@@ -32,7 +42,7 @@ type WeatherAPIResponse struct {
 	} `json:"current"`
 }
 
-func (s *WeatherService) GetWeather(location string) (*model.Weather, error) {
+func (s *weatherService) GetWeather(location string) (*model.Weather, error) {
 	url := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s", s.apiKey, location)
 
 	resp, err := http.Get(url)

@@ -20,6 +20,9 @@ jobs:
           go-version: stable
           cache: true
       -
+        name: Run generation
+        run: go generate ./...
+      -
         name: Test
         run: go test -race -coverprofile=coverage.out -covermode=atomic ./...
       -

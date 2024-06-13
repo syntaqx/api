@@ -14,6 +14,8 @@ RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build \
     go install ./cmd/...
 
+RUN go generate ./...
+
 FROM alpine
 
 RUN adduser -S -D -H -h /app appuser
