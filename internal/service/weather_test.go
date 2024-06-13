@@ -46,3 +46,33 @@ func TestGetWeather(t *testing.T) {
 	assert.Equal(t, fmt.Sprintf("%.1f°F", weatherResponse.Current.TempF), weather.Temperature)
 	assert.Equal(t, weatherResponse.Current.Condition.Text, weather.Description)
 }
+
+func TestGetWeather_Fail(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "error", http.StatusInternalServerError)
+	}))
+	defer srv.Close()
+
+	weatherService := NewWeatherService(&config.Config{
+		WeatherAPIHost: srv.URL,
+		WeatherAPIKey:  "test",
+	})
+
+	_, err := weatherService.GetWeather("Test Location")
+	assert.Error(t, err)
+}
+
+func TestGetWeather_InvalidResponse(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("invalid json"))
+	}))
+	defer srv.Close()
+
+	weatherService := NewWeatherService(&config.Config{
+		WeatherAPIHost: srv.URL,
+		WeatherAPIKey:  "test",
+	})
+
+	_, err := weatherService.GetWeather("Test Location")
+	assert.Error(t, err)
+}
