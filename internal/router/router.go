@@ -18,6 +18,8 @@ import (
 
 // @host      localhost:8080
 // @BasePath  /
+
+// NewRouter creates a new chi router with base middleware and swagger docs
 func NewRouter(logger *zap.Logger) chi.Router {
 	r := chi.NewRouter()
 
