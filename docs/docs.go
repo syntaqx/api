@@ -155,7 +155,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.User"
+                            "$ref": "#/definitions/handler.CreateUserRequest"
                         }
                     }
                 ],
@@ -300,6 +300,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "handler.CreateUserRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "handler.HealthResponse": {
             "type": "object",
             "properties": {

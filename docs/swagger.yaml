@@ -1,5 +1,16 @@
 basePath: /
 definitions:
+  handler.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      login:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
   handler.HealthResponse:
     properties:
       status:
@@ -141,7 +152,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/model.User'
+          $ref: '#/definitions/handler.CreateUserRequest'
       produces:
       - application/json
       responses:

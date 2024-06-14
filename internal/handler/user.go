@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/render"
 	"github.com/gofrs/uuid/v5"
 
 	"github.com/syntaqx/api/internal/model"
@@ -29,23 +30,42 @@ func (h *UserHandler) RegisterRoutes(r chi.Router) {
 	})
 }
 
+type CreateUserRequest struct {
+	Login    string `json:"login"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Name     string `json:"name"`
+}
+
+func (r *CreateUserRequest) Bind(_ *http.Request) error {
+	return nil
+}
+
 // CreateUser godoc
 // @Summary     Create a user
 // @Description Create a user
 // @Tags        users
 // @Accept      json
 // @Produce     json
-// @Param       user body model.User true "User object"
+// @Param       user body CreateUserRequest true "User object"
 // @Success     201 {object} model.User
 // @Router     /users [post]
 func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var user model.User
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+	var req CreateUserRequest
+	if err := render.Bind(r, &req); err != nil {
+		render.Status(r, http.StatusBadRequest)
+		render.JSON(w, r, err)
 		return
 	}
 
-	if err := h.service.CreateUser(&user); err != nil {
+	user := &model.User{
+		Login:    req.Login,
+		Email:    req.Email,
+		Password: req.Password,
+		Name:     req.Name,
+	}
+
+	if err := h.service.CreateUser(user); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
