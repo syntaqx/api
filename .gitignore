@@ -21,6 +21,9 @@
 go.work
 go.work.sum
 
+# SQLite database file
+*.db
+
 # Local environment
 .env
 compose.override.yml

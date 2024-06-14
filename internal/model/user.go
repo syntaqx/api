@@ -7,8 +7,10 @@ import (
 )
 
 type User struct {
-	ID        uuid.UUID `json:"id"`
+	ID        uuid.UUID `gorm:"primaryKey" json:"id"`
 	Login     string    `json:"login"`
+	Email     string    `json:"email"`
+	Password  string    `json:"-"`
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`

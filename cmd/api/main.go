@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"os"
@@ -11,9 +12,13 @@ import (
 
 	"github.com/syntaqx/env"
 	"go.uber.org/zap"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 
 	"github.com/syntaqx/api/internal/config"
 	"github.com/syntaqx/api/internal/handler"
+	"github.com/syntaqx/api/internal/model"
+	"github.com/syntaqx/api/internal/repository"
 	"github.com/syntaqx/api/internal/router"
 	"github.com/syntaqx/api/internal/service"
 )
@@ -32,16 +37,31 @@ func main() {
 	}
 	defer logger.Sync()
 
+	// Initialize config
 	cfg := config.NewConfig()
+
+	// Initialize database
+	db, err := gorm.Open(postgres.Open(cfg.DatabaseURL), &gorm.Config{})
+	if err != nil {
+		log.Fatal("failed to connect to PostgreSQL database: ", err)
+	}
+
+	// Migrate the schema
+	db.AutoMigrate(&model.User{})
+
+	// Initialize repositories
+	userRepository := repository.NewUserRepository(db)
 
 	// Initialize services
 	weatherService := service.NewWeatherService(cfg)
+	userService := service.NewUserService(userRepository)
 
 	// Initialize handlers
 	rootHandler := handler.NewRootHandler()
 	healthHandler := handler.NewHealthHandler()
 	timeHandler := handler.NewTimeHandler()
 	weatherHandler := handler.NewWeatherHandler(weatherService)
+	userHandler := handler.NewUserHandler(userService)
 
 	// Initialize router
 	r := router.NewRouter(cfg, logger)
@@ -51,6 +71,7 @@ func main() {
 	healthHandler.RegisterRoutes(r)
 	timeHandler.RegisterRoutes(r)
 	weatherHandler.RegisterRoutes(r)
+	userHandler.RegisterRoutes(r)
 
 	// Static files
 	workDir, _ := os.Getwd()
