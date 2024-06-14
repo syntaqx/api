@@ -34,15 +34,15 @@ func NewRouter(config *config.Config, logger *zap.Logger) chi.Router {
 	r.Use(zapchi.Logger(logger, "router"))
 	r.Use(middleware.Recoverer)
 
-	host := config.Host
-	if config.Host == "" || config.Host == "localhost" {
-		host = net.JoinHostPort(config.Host, config.Port)
+	fqdn := config.FQDN
+	if config.FQDN == "" || config.FQDN == "localhost" {
+		fqdn = net.JoinHostPort(config.FQDN, config.Port)
 	}
 
-	docs.SwaggerInfo.Host = host
+	docs.SwaggerInfo.Host = fqdn
 
 	r.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL(fmt.Sprintf("http://%s/swagger/doc.json", host)), //The url pointing to API definition
+		httpSwagger.URL(fmt.Sprintf("%s/swagger/doc.json", fqdn)), //The url pointing to API definition
 	))
 
 	return r

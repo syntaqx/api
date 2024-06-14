@@ -70,8 +70,8 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(user)
+	render.Status(r, http.StatusOK)
+	render.Render(w, r, user)
 }
 
 // GetUser godoc
@@ -97,7 +97,8 @@ func (h *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(user)
+	render.Status(r, http.StatusOK)
+	render.Render(w, r, user)
 }
 
 // UpdateUser godoc

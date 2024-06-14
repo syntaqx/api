@@ -1,6 +1,7 @@
 package model
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/gofrs/uuid/v5"
@@ -14,4 +15,8 @@ type User struct {
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (u *User) Render(_ http.ResponseWriter, _ *http.Request) error {
+	return nil
 }
