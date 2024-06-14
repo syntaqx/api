@@ -1,3 +1,4 @@
 ignore:
+  - "docs" # ignore generated docs files
   - "cmd" # ignore cmd files
   - "internal/**/mock/*" # ignore mock paths
