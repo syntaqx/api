@@ -25,7 +25,7 @@ type weatherService struct {
 var _ WeatherService = (*weatherService)(nil)
 
 // NewWeatherService creates a new weather service.
-func NewWeatherService(cfg *config.Config) *weatherService {
+func NewWeatherService(cfg *config.Config) WeatherService {
 	return &weatherService{
 		apiHost: cfg.WeatherAPIHost,
 		apiKey:  cfg.WeatherAPIKey,
