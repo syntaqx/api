@@ -19,6 +19,9 @@ type userService struct {
 	repo repository.UserRepository
 }
 
+// Assert userService implements UserService interface at comiple time.
+var _ UserService = (*userService)(nil)
+
 func NewUserService(repo repository.UserRepository) UserService {
 	return &userService{repo: repo}
 }

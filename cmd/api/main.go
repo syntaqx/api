@@ -12,13 +12,13 @@ import (
 
 	"github.com/syntaqx/env"
 	"go.uber.org/zap"
-	"gorm.io/driver/postgres"
+	pg "gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
 	"github.com/syntaqx/api/internal/config"
 	"github.com/syntaqx/api/internal/handler"
 	"github.com/syntaqx/api/internal/model"
-	"github.com/syntaqx/api/internal/repository"
+	"github.com/syntaqx/api/internal/repository/postgres"
 	"github.com/syntaqx/api/internal/router"
 	"github.com/syntaqx/api/internal/service"
 )
@@ -41,7 +41,7 @@ func main() {
 	cfg := config.NewConfig()
 
 	// Initialize database
-	db, err := gorm.Open(postgres.Open(cfg.DatabaseURL), &gorm.Config{})
+	db, err := gorm.Open(pg.Open(cfg.DatabaseURL), &gorm.Config{})
 	if err != nil {
 		log.Fatal("failed to connect to PostgreSQL database: ", err)
 	}
@@ -50,7 +50,7 @@ func main() {
 	db.AutoMigrate(&model.User{})
 
 	// Initialize repositories
-	userRepository := repository.NewUserRepository(db)
+	userRepository := postgres.NewUserRepository(db)
 
 	// Initialize services
 	weatherService := service.NewWeatherService(cfg)
