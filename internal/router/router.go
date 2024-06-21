@@ -35,6 +35,9 @@ func NewRouter(config *config.Config, logger *zap.Logger) chi.Router {
 	r.Use(middleware.Recoverer)
 
 	fqdn := config.FQDN
+
+	fmt.Printf("FQDN: %s\n", config.FQDN)
+
 	if config.FQDN == "" || config.FQDN == "localhost" {
 		fqdn = net.JoinHostPort(config.FQDN, config.Port)
 	}

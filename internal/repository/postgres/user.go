@@ -2,19 +2,19 @@ package postgres
 
 import (
 	"github.com/gofrs/uuid/v5"
+
 	"github.com/syntaqx/api/internal/model"
 	"github.com/syntaqx/api/internal/repository"
-	"gorm.io/gorm"
 )
 
 type UserRepository struct {
-	db *gorm.DB
+	db repository.DB
 }
 
 // Assert userRepository implements UserRepository interface at comiple time.
 var _ repository.UserRepository = (*UserRepository)(nil)
 
-func NewUserRepository(db *gorm.DB) repository.UserRepository {
+func NewUserRepository(db repository.DB) repository.UserRepository {
 	return &UserRepository{db: db}
 }
 
