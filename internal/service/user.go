@@ -7,6 +7,8 @@ import (
 	"github.com/syntaqx/api/internal/repository"
 )
 
+//go:generate go run github.com/matryer/moq -pkg mock -out ./mock/user_service.go . UserService
+
 type UserService interface {
 	CreateUser(user *model.User) error
 	GetUserByID(id uuid.UUID) (*model.User, error)
@@ -27,6 +29,7 @@ func NewUserService(repo repository.UserRepository) UserService {
 }
 
 func (s *userService) CreateUser(user *model.User) error {
+	user.ID = uuid.Must(uuid.NewV4())
 	return s.repo.CreateUser(user)
 }
 
