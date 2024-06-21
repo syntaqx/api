@@ -28,6 +28,15 @@ func TestUserServiceCRUD(t *testing.T) {
 			}
 			return nil, nil
 		},
+		UpdateUserFunc: func(user *model.User) error {
+			for i, u := range users {
+				if u.ID == user.ID {
+					users[i] = user
+					return nil
+				}
+			}
+			return nil
+		},
 		DeleteUserFunc: func(id uuid.UUID) error {
 			for i, user := range users {
 				if user.ID == id {
@@ -62,6 +71,13 @@ func TestUserServiceCRUD(t *testing.T) {
 	actualUser, err := userService.GetUserByID(user.ID)
 	assert.NoError(t, err, "GetUserByID should not return an error")
 	assert.Equal(t, user, actualUser, "GetUserByID should return the correct user")
+
+	previousLogin := user.Login
+	user.Login = "test2"
+	err = userService.UpdateUser(user)
+
+	assert.NoError(t, err, "UpdateUser should not return an error")
+	assert.NotEqual(t, previousLogin, user.Login, "User login should be updated")
 
 	err = userService.DeleteUser(user.ID)
 	assert.NoError(t, err, "DeleteUser should not return an error")
