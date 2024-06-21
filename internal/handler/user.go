@@ -12,6 +12,10 @@ import (
 	"github.com/syntaqx/api/internal/service"
 )
 
+const (
+	UserURLPrefix = "/users"
+)
+
 type UserHandler struct {
 	service service.UserService
 }
@@ -21,7 +25,7 @@ func NewUserHandler(service service.UserService) *UserHandler {
 }
 
 func (h *UserHandler) RegisterRoutes(r chi.Router) {
-	r.Route("/users", func(r chi.Router) {
+	r.Route(UserURLPrefix, func(r chi.Router) {
 		r.Post("/", h.CreateUser)
 		r.Get("/{id}", h.GetUser)
 		r.Put("/{id}", h.UpdateUser)
@@ -52,6 +56,7 @@ func (r *CreateUserRequest) Bind(_ *http.Request) error {
 // @Router     /users [post]
 func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var req CreateUserRequest
+
 	if err := render.Bind(r, &req); err != nil {
 		render.Status(r, http.StatusBadRequest)
 		render.JSON(w, r, err)

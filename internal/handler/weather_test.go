@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -34,7 +35,7 @@ func TestWeatherHandler_GetWeather(t *testing.T) {
 	weatherHandler.RegisterRoutes(router)
 
 	// Create a new request with a location query parameter
-	req, err := http.NewRequest("GET", "/weather?location=test", nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s?location=test", WeatherURLPrefix), nil)
 	assert.NoError(t, err)
 
 	// Create a new response recorder
@@ -68,7 +69,7 @@ func TestWeatherHandler_GetWeatherDefaultLocation(t *testing.T) {
 	weatherHandler.RegisterRoutes(router)
 
 	// Create a new request with a location query parameter
-	req, err := http.NewRequest("GET", "/weather", nil)
+	req, err := http.NewRequest(http.MethodGet, WeatherURLPrefix, nil)
 	assert.NoError(t, err)
 
 	// Create a new response recorder
@@ -96,7 +97,7 @@ func TestWeatherHandler_GetWeatherError(t *testing.T) {
 	weatherHandler.RegisterRoutes(router)
 
 	// Create a new request with a location query parameter
-	req, err := http.NewRequest("GET", "/weather?location=test", nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s?location=test", WeatherURLPrefix), nil)
 	assert.NoError(t, err)
 
 	// Create a new response recorder

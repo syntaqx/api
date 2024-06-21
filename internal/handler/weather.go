@@ -12,6 +12,10 @@ import (
 // DefaultLocation is the default location to use if none is provided.
 const DefaultLocation = "84095"
 
+const (
+	WeatherURLPrefix = "/weather"
+)
+
 type WeatherHandler struct {
 	service service.WeatherService
 }
@@ -21,7 +25,7 @@ func NewWeatherHandler(service service.WeatherService) *WeatherHandler {
 }
 
 func (h *WeatherHandler) RegisterRoutes(r chi.Router) {
-	r.Get("/weather", h.GetWeather)
+	r.Get(WeatherURLPrefix, h.GetWeather)
 }
 
 // @Summary      Get the current weather
