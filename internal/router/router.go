@@ -36,10 +36,14 @@ func NewRouter(config *config.Config, logger *zap.Logger) chi.Router {
 
 	fqdn := config.FQDN
 
-	fmt.Printf("FQDN: %s\n", config.FQDN)
-
-	if config.FQDN == "" || config.FQDN == "localhost" {
+	if fqdn == "localhost" || fqdn == "" {
 		fqdn = net.JoinHostPort(config.FQDN, config.Port)
+	}
+
+	if config.HTTPS {
+		fqdn = "https://" + fqdn
+	} else {
+		fqdn = "http://" + fqdn
 	}
 
 	docs.SwaggerInfo.Host = fqdn
