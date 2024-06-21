@@ -29,7 +29,9 @@ func NewUserService(repo repository.UserRepository) UserService {
 }
 
 func (s *userService) CreateUser(user *model.User) error {
-	user.ID = uuid.Must(uuid.NewV4())
+	if user.ID == uuid.Nil {
+		user.ID = uuid.Must(uuid.NewV4())
+	}
 	return s.repo.CreateUser(user)
 }
 

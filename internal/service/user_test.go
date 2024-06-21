@@ -42,7 +42,10 @@ func TestUserServiceCRUD(t *testing.T) {
 	// Create a new UserService instance
 	userService := NewUserService(repository)
 
+	uuid := uuid.Must(uuid.NewV4())
+
 	user := &model.User{
+		ID:    uuid,
 		Login: "test",
 		Email: "test@test.locahost",
 	}
@@ -50,7 +53,7 @@ func TestUserServiceCRUD(t *testing.T) {
 	err := userService.CreateUser(user)
 
 	assert.NoError(t, err, "CreateUser should not return an error")
-	assert.NotEmpty(t, user.ID, "User ID should not be empty")
+	assert.Equal(t, uuid, user.ID, "User ID should be the same as the one provided")
 
 	users, err = userService.ListUsers()
 	assert.NoError(t, err, "ListUsers should not return an error")
@@ -66,4 +69,21 @@ func TestUserServiceCRUD(t *testing.T) {
 	users, err = userService.ListUsers()
 	assert.NoError(t, err, "ListUsers should not return an error")
 	assert.Len(t, users, 0, "ListUsers should return 0 users")
+}
+
+func TestCreateUserWithoutUUID(t *testing.T) {
+	repository := &mock.UserRepositoryMock{
+		CreateUserFunc: func(user *model.User) error {
+			return nil
+		},
+	}
+	userService := NewUserService(repository)
+
+	user := &model.User{
+		Login: "test",
+	}
+
+	err := userService.CreateUser(user)
+	assert.NoError(t, err, "CreateUser should not return an error")
+	assert.NotEmpty(t, user.ID, "User ID should not be empty")
 }
