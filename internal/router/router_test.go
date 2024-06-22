@@ -5,9 +5,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap"
+
+	"github.com/syntaqx/api/docs"
 	"github.com/syntaqx/api/internal/config"
 	"github.com/syntaqx/api/internal/router"
-	"go.uber.org/zap"
 )
 
 func TestNewRouter(t *testing.T) {
@@ -33,4 +36,18 @@ func TestNewRouter(t *testing.T) {
 	if responseWriter.Code != http.StatusOK {
 		t.Errorf("Expected status code %d, but got %d", http.StatusOK, responseWriter.Code)
 	}
+}
+
+func TestNewRouterHTTPS(t *testing.T) {
+	cfg := &config.Config{
+		FQDN:  "localhost",
+		HTTPS: true,
+		Port:  "8080",
+	}
+
+	logger := zap.NewNop()
+
+	_ = router.NewRouter(cfg, logger)
+
+	assert.Equal(t, docs.SwaggerInfo.Host, "https://localhost:8080")
 }
