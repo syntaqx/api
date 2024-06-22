@@ -124,19 +124,20 @@ func (h *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user model.User
+	user := &model.User{}
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	user.ID = id
 
-	if err := h.service.UpdateUser(&user); err != nil {
+	if err := h.service.UpdateUser(user); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	json.NewEncoder(w).Encode(user)
+	render.Status(r, http.StatusOK)
+	render.Render(w, r, user)
 }
 
 // DeleteUser godoc
@@ -161,7 +162,7 @@ func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusNoContent)
+	render.Status(r, http.StatusNoContent)
 }
 
 // ListUsers godoc
@@ -179,5 +180,6 @@ func (h *UserHandler) ListUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(users)
+	render.Status(r, http.StatusOK)
+	render.RenderList(w, r, model.NewUserListResponse(users))
 }

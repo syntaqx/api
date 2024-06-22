@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-chi/render"
 	"github.com/gofrs/uuid/v5"
 )
 
@@ -19,4 +20,12 @@ type User struct {
 
 func (u *User) Render(_ http.ResponseWriter, _ *http.Request) error {
 	return nil
+}
+
+func NewUserListResponse(users []*User) []render.Renderer {
+	list := []render.Renderer{}
+	for _, user := range users {
+		list = append(list, user)
+	}
+	return list
 }
