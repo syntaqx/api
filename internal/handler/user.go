@@ -162,7 +162,7 @@ func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	render.Status(r, http.StatusNoContent)
+	w.WriteHeader(http.StatusNoContent)
 }
 
 // ListUsers godoc
