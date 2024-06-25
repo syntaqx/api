@@ -350,3 +350,54 @@ func TestUserHandler_BindErrors(t *testing.T) {
 		})
 	}
 }
+func TestUserHandler_InvalidUUIDs(t *testing.T) {
+	// Define the test cases
+	testCases := []struct {
+		name           string
+		endpoint       string
+		method         string
+		expectedStatus int
+	}{
+		{
+			name:           "GetUser_InvalidUUID",
+			endpoint:       UserURLPrefix + "/invalid-uuid",
+			method:         http.MethodGet,
+			expectedStatus: http.StatusBadRequest,
+		},
+		{
+			name:           "UpdateUser_InvalidUUID",
+			endpoint:       UserURLPrefix + "/invalid-uuid",
+			method:         http.MethodPut,
+			expectedStatus: http.StatusBadRequest,
+		},
+		{
+			name:           "DeleteUser_InvalidUUID",
+			endpoint:       UserURLPrefix + "/invalid-uuid",
+			method:         http.MethodDelete,
+			expectedStatus: http.StatusBadRequest,
+		},
+	}
+
+	// Create a mock service
+	mockUserService := &mock.UserServiceMock{}
+	// Create a user handler with the mock service
+	h := NewUserHandler(mockUserService)
+	// Create a mock router
+	r := chi.NewRouter()
+	h.RegisterRoutes(r)
+
+	// Iterate over the test cases
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Create a mock response recorder
+			rr := httptest.NewRecorder()
+			// Create a mock request
+			req, err := http.NewRequest(tc.method, tc.endpoint, nil)
+			assert.NoError(t, err)
+			// Serve the request
+			r.ServeHTTP(rr, req)
+			// Assert the response status code
+			assert.Equal(t, tc.expectedStatus, rr.Code)
+		})
+	}
+}
