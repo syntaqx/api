@@ -293,3 +293,60 @@ func TestUserHandler_ServiceErrors(t *testing.T) {
 		})
 	}
 }
+func TestUserHandler_BindErrors(t *testing.T) {
+	// Define the test cases
+	testCases := []struct {
+		name           string
+		endpoint       string
+		method         string
+		requestBody    interface{}
+		expectedStatus int
+	}{
+		{
+			name:           "CreateUser_BindError",
+			endpoint:       UserURLPrefix,
+			method:         http.MethodPost,
+			requestBody:    "invalid_request_body",
+			expectedStatus: http.StatusBadRequest,
+		},
+		{
+			name:           "UpdateUser_BindError",
+			endpoint:       UserURLPrefix + "/00000000-0000-0000-0000-000000000000",
+			method:         http.MethodPut,
+			requestBody:    "invalid_request_body",
+			expectedStatus: http.StatusBadRequest,
+		},
+	}
+
+	// Create a mock service
+	mockUserService := &mock.UserServiceMock{}
+
+	// Create a user handler with the mock service
+	h := NewUserHandler(mockUserService)
+
+	// Create a mock router
+	r := chi.NewRouter()
+	h.RegisterRoutes(r)
+
+	// Iterate over the test cases
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Create a mock response recorder
+			rr := httptest.NewRecorder()
+
+			// Create a mock request body
+			requestBody, _ := json.Marshal(tc.requestBody)
+
+			// Create a mock request
+			req, err := http.NewRequest(tc.method, tc.endpoint, bytes.NewBuffer(requestBody))
+			assert.NoError(t, err)
+			req.Header.Set("Content-Type", "application/json")
+
+			// Serve the request
+			r.ServeHTTP(rr, req)
+
+			// Assert the response status code
+			assert.Equal(t, tc.expectedStatus, rr.Code)
+		})
+	}
+}
