@@ -18,6 +18,10 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+func (u *User) Bind(r *http.Request) error {
+	return nil
+}
+
 func (u *User) Render(_ http.ResponseWriter, _ *http.Request) error {
 	return nil
 }

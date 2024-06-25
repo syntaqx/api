@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -125,10 +124,12 @@ func (h *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user := &model.User{}
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+	if err := render.Bind(r, user); err != nil {
+		render.Status(r, http.StatusBadRequest)
+		render.JSON(w, r, err)
 		return
 	}
+
 	user.ID = id
 
 	if err := h.service.UpdateUser(user); err != nil {
