@@ -151,6 +151,7 @@ func (h *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 // @Router /users/{id} [delete]
 func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
+
 	id, err := uuid.FromString(idStr)
 	if err != nil {
 		http.Error(w, "invalid user ID", http.StatusBadRequest)

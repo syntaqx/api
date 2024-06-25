@@ -3,6 +3,7 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -196,4 +197,99 @@ func TestUserHandler_CRUD(t *testing.T) {
 
 	// Assert the response status code
 	assert.Equal(t, http.StatusNoContent, rr.Code)
+}
+
+func TestUserHandler_ServiceErrors(t *testing.T) {
+	// Define the test cases
+	testCases := []struct {
+		name           string
+		endpoint       string
+		method         string
+		requestBody    interface{}
+		expectedStatus int
+	}{
+		{
+			name:           "CreateUser",
+			endpoint:       UserURLPrefix,
+			method:         http.MethodPost,
+			requestBody:    CreateUserRequest{},
+			expectedStatus: http.StatusInternalServerError,
+		},
+		{
+			name:           "GetUser",
+			endpoint:       UserURLPrefix + "/00000000-0000-0000-0000-000000000000",
+			method:         http.MethodGet,
+			requestBody:    nil,
+			expectedStatus: http.StatusNotFound,
+		},
+		{
+			name:           "ListUsers",
+			endpoint:       UserURLPrefix,
+			method:         http.MethodGet,
+			requestBody:    nil,
+			expectedStatus: http.StatusInternalServerError,
+		},
+		{
+			name:           "UpdateUser",
+			endpoint:       UserURLPrefix + "/00000000-0000-0000-0000-000000000000",
+			method:         http.MethodPut,
+			requestBody:    model.User{},
+			expectedStatus: http.StatusInternalServerError,
+		},
+		{
+			name:           "DeleteUser",
+			endpoint:       UserURLPrefix + "/00000000-0000-0000-0000-000000000000",
+			method:         http.MethodDelete,
+			requestBody:    nil,
+			expectedStatus: http.StatusInternalServerError,
+		},
+	}
+
+	// Create a mock service that returns errors
+	mockErrorService := &mock.UserServiceMock{
+		GetUserByIDFunc: func(id uuid.UUID) (*model.User, error) {
+			return nil, errors.New("mock error")
+		},
+		ListUsersFunc: func() ([]*model.User, error) {
+			return nil, errors.New("mock error")
+		},
+		CreateUserFunc: func(user *model.User) error {
+			return errors.New("mock error")
+		},
+		UpdateUserFunc: func(user *model.User) error {
+			return errors.New("mock error")
+		},
+		DeleteUserFunc: func(id uuid.UUID) error {
+			return errors.New("mock error")
+		},
+	}
+
+	// Create a user handler with the mock service
+	h := NewUserHandler(mockErrorService)
+
+	// Create a mock router
+	r := chi.NewRouter()
+	h.RegisterRoutes(r)
+
+	// Iterate over the test cases
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Create a mock response recorder
+			rr := httptest.NewRecorder()
+
+			// Create a mock request body
+			requestBody, _ := json.Marshal(tc.requestBody)
+
+			// Create a mock request
+			req, err := http.NewRequest(tc.method, tc.endpoint, bytes.NewBuffer(requestBody))
+			assert.NoError(t, err)
+			req.Header.Set("Content-Type", "application/json")
+
+			// Serve the request
+			r.ServeHTTP(rr, req)
+
+			// Assert the response status code
+			assert.Equal(t, tc.expectedStatus, rr.Code)
+		})
+	}
 }
