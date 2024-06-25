@@ -15,15 +15,15 @@ const (
 	UserURLPrefix = "/users"
 )
 
-type UserHandler struct {
+type UsersHandler struct {
 	service service.UserService
 }
 
-func NewUserHandler(service service.UserService) *UserHandler {
-	return &UserHandler{service: service}
+func NewUsersHandler(service service.UserService) *UsersHandler {
+	return &UsersHandler{service: service}
 }
 
-func (h *UserHandler) RegisterRoutes(r chi.Router) {
+func (h *UsersHandler) RegisterRoutes(r chi.Router) {
 	r.Route(UserURLPrefix, func(r chi.Router) {
 		r.Post("/", h.CreateUser)
 		r.Get("/{id}", h.GetUser)
@@ -53,7 +53,7 @@ func (r *CreateUserRequest) Bind(_ *http.Request) error {
 // @Param       user body CreateUserRequest true "User object"
 // @Success     201 {object} model.User
 // @Router     /users [post]
-func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
+func (h *UsersHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var req CreateUserRequest
 
 	if err := render.Bind(r, &req); err != nil {
@@ -87,7 +87,7 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 // @Param id path string true "User ID"
 // @Success 200 {object} model.User
 // @Router /users/{id} [get]
-func (h *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) {
+func (h *UsersHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := uuid.FromString(idStr)
 	if err != nil {
@@ -115,7 +115,7 @@ func (h *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 // @Param user body model.User true "User object"
 // @Success 200 {object} model.User
 // @Router /users/{id} [put]
-func (h *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
+func (h *UsersHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := uuid.FromString(idStr)
 	if err != nil {
@@ -150,7 +150,7 @@ func (h *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 // @Param id path string true "User ID"
 // @Success 204
 // @Router /users/{id} [delete]
-func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
+func (h *UsersHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 
 	id, err := uuid.FromString(idStr)
@@ -175,7 +175,7 @@ func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Success 200 {array} model.User
 // @Router /users [get]
-func (h *UserHandler) ListUsers(w http.ResponseWriter, r *http.Request) {
+func (h *UsersHandler) ListUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := h.service.ListUsers()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

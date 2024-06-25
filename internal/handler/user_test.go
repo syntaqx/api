@@ -17,7 +17,7 @@ import (
 	"github.com/syntaqx/api/internal/service/mock"
 )
 
-func TestUserHandler_CRUD(t *testing.T) {
+func TestUsersHandler_CRUD(t *testing.T) {
 	id := uuid.Must(uuid.NewV4())
 	// Create our base user
 	createRequest := CreateUserRequest{
@@ -58,7 +58,7 @@ func TestUserHandler_CRUD(t *testing.T) {
 		},
 	}
 
-	h := NewUserHandler(mockUserService)
+	h := NewUsersHandler(mockUserService)
 
 	// Create a mock response recorder
 	rr := httptest.NewRecorder()
@@ -199,7 +199,7 @@ func TestUserHandler_CRUD(t *testing.T) {
 	assert.Equal(t, http.StatusNoContent, rr.Code)
 }
 
-func TestUserHandler_ServiceErrors(t *testing.T) {
+func TestUsersHandler_ServiceErrors(t *testing.T) {
 	// Define the test cases
 	testCases := []struct {
 		name           string
@@ -265,7 +265,7 @@ func TestUserHandler_ServiceErrors(t *testing.T) {
 	}
 
 	// Create a user handler with the mock service
-	h := NewUserHandler(mockErrorService)
+	h := NewUsersHandler(mockErrorService)
 
 	// Create a mock router
 	r := chi.NewRouter()
@@ -293,7 +293,7 @@ func TestUserHandler_ServiceErrors(t *testing.T) {
 		})
 	}
 }
-func TestUserHandler_BindErrors(t *testing.T) {
+func TestUsersHandler_BindErrors(t *testing.T) {
 	// Define the test cases
 	testCases := []struct {
 		name           string
@@ -322,7 +322,7 @@ func TestUserHandler_BindErrors(t *testing.T) {
 	mockUserService := &mock.UserServiceMock{}
 
 	// Create a user handler with the mock service
-	h := NewUserHandler(mockUserService)
+	h := NewUsersHandler(mockUserService)
 
 	// Create a mock router
 	r := chi.NewRouter()
@@ -350,7 +350,7 @@ func TestUserHandler_BindErrors(t *testing.T) {
 		})
 	}
 }
-func TestUserHandler_InvalidUUIDs(t *testing.T) {
+func TestUsersHandler_InvalidUUIDs(t *testing.T) {
 	// Define the test cases
 	testCases := []struct {
 		name           string
@@ -381,7 +381,7 @@ func TestUserHandler_InvalidUUIDs(t *testing.T) {
 	// Create a mock service
 	mockUserService := &mock.UserServiceMock{}
 	// Create a user handler with the mock service
-	h := NewUserHandler(mockUserService)
+	h := NewUsersHandler(mockUserService)
 	// Create a mock router
 	r := chi.NewRouter()
 	h.RegisterRoutes(r)

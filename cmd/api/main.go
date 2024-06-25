@@ -61,7 +61,7 @@ func main() {
 	healthHandler := handler.NewHealthHandler()
 	timeHandler := handler.NewTimeHandler()
 	weatherHandler := handler.NewWeatherHandler(weatherService)
-	userHandler := handler.NewUserHandler(userService)
+	usersHandler := handler.NewUsersHandler(userService)
 	gamesHandler := handler.NewGamesHandler()
 
 	// Initialize router
@@ -72,7 +72,7 @@ func main() {
 	healthHandler.RegisterRoutes(r)
 	timeHandler.RegisterRoutes(r)
 	weatherHandler.RegisterRoutes(r)
-	userHandler.RegisterRoutes(r)
+	usersHandler.RegisterRoutes(r)
 	gamesHandler.RegisterRoutes(r)
 
 	// Static files
