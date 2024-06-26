@@ -41,7 +41,7 @@ func TestGame_Render(t *testing.T) {
 	}
 }
 
-func TestewGameListResponse(t *testing.T) {
+func TestGameListResponse(t *testing.T) {
 	games := []*Game{
 		{
 			ID:   uuid.Nil,
