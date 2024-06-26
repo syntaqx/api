@@ -63,6 +63,7 @@ func main() {
 	weatherHandler := handler.NewWeatherHandler(weatherService)
 	usersHandler := handler.NewUsersHandler(userService)
 	gamesHandler := handler.NewGamesHandler()
+	bookmarksHandler := handler.NewBookmarksHandler()
 
 	// Initialize router
 	r := router.NewRouter(cfg, logger)
@@ -74,6 +75,7 @@ func main() {
 	weatherHandler.RegisterRoutes(r)
 	usersHandler.RegisterRoutes(r)
 	gamesHandler.RegisterRoutes(r)
+	bookmarksHandler.RegisterRoutes(r)
 
 	// Static files
 	workDir, _ := os.Getwd()
