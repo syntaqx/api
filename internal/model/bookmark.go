@@ -19,9 +19,9 @@ type Bookmark struct {
 	ID        uuid.UUID    `gorm:"primaryKey" json:"id"`
 	Name      string       `json:"name"`
 	Type      BookmarkType `json:"type"`
-	URL       string       `json:"url"`
+	URL       string       `json:"url,omitempty"`
 	Tags      []string     `json:"tags"`
-	Children  []*Bookmark  `json:"children"`
+	Children  []*Bookmark  `json:"children,omitempty"`
 	CreatedAt time.Time    `json:"created_at"`
 	UpdatedAt time.Time    `json:"updated_at"`
 }
