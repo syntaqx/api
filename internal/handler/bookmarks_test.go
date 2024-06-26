@@ -9,18 +9,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGamesCRUD(t *testing.T) {
+func TestBookmarksCRUD(t *testing.T) {
 	// Create a new router
 	r := chi.NewRouter()
 
 	// Create a new GamesHandler
-	handler := NewGamesHandler()
+	handler := NewBookmarksHandler()
 
 	// Register routes
 	handler.RegisterRoutes(r)
 
 	// Create a new request
-	req, err := http.NewRequest(http.MethodGet, GamesURLPrefix, nil)
+	req, err := http.NewRequest(http.MethodGet, BookmarksURLPrefix, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

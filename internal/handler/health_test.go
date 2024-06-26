@@ -16,7 +16,7 @@ func TestHealthHandler_GetHealth(t *testing.T) {
 	router := chi.NewRouter()
 	handler.RegisterRoutes(router)
 
-	req, err := http.NewRequest("GET", "/healthz", nil)
+	req, err := http.NewRequest(http.MethodGet, "/healthz", nil)
 	assert.NoError(t, err)
 
 	rr := httptest.NewRecorder()
@@ -40,7 +40,7 @@ func TestHealthHandler_GetReady(t *testing.T) {
 	router := chi.NewRouter()
 	handler.RegisterRoutes(router)
 
-	req, err := http.NewRequest("GET", "/readiness", nil)
+	req, err := http.NewRequest(http.MethodGet, "/readiness", nil)
 	assert.NoError(t, err)
 
 	rr := httptest.NewRecorder()

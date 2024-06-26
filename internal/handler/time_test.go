@@ -19,7 +19,7 @@ func TestTimeHandler_CurrentTime(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 
-	req, err := http.NewRequest("GET", "/time", nil)
+	req, err := http.NewRequest(http.MethodGet, "/time", nil)
 	assert.NoError(t, err)
 
 	router.ServeHTTP(rr, req)

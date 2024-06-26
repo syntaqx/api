@@ -17,7 +17,7 @@ func TestFileServer_FileNotFound(t *testing.T) {
 	FileServer(r, "/static", root)
 
 	// Create a new request to the static file URL
-	req, err := http.NewRequest("GET", "/static/file-not-found", nil)
+	req, err := http.NewRequest(http.MethodGet, "/static/file-not-found", nil)
 	assert.NoError(t, err)
 
 	// Create a new response recorder
