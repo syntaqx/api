@@ -3,7 +3,7 @@ module github.com/syntaqx/api
 go 1.22.3
 
 require (
-	github.com/go-chi/chi/v5 v5.0.14
+	github.com/go-chi/chi/v5 v5.1.0
 	github.com/go-chi/render v1.0.3
 	github.com/gofrs/uuid/v5 v5.2.0
 	github.com/matryer/moq v0.3.4
