@@ -1,13 +1,10 @@
 package router
 
 import (
-	"fmt"
-	"net"
-
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/rs/cors"
 	httpSwagger "github.com/swaggo/http-swagger/v2"
-	"github.com/syntaqx/api/docs"
 	_ "github.com/syntaqx/api/docs"
 	"github.com/syntaqx/api/internal/config"
 	"github.com/syntaqx/zapchi"
@@ -33,24 +30,9 @@ func NewRouter(config *config.Config, logger *zap.Logger) chi.Router {
 	r.Use(middleware.RealIP)
 	r.Use(zapchi.Logger(logger, "router"))
 	r.Use(middleware.Recoverer)
+	r.Use(cors.AllowAll().Handler)
 
-	fqdn := config.FQDN
-
-	if fqdn == "localhost" || fqdn == "" {
-		fqdn = net.JoinHostPort(config.FQDN, config.Port)
-	}
-
-	if config.HTTPS {
-		fqdn = "https://" + fqdn
-	} else {
-		fqdn = "http://" + fqdn
-	}
-
-	docs.SwaggerInfo.Host = fqdn
-
-	r.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL(fmt.Sprintf("%s/swagger/doc.json", fqdn)), //The url pointing to API definition
-	))
+	r.Get("/swagger/*", httpSwagger.Handler())
 
 	return r
 }

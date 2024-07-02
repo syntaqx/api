@@ -1,5 +1,10 @@
 basePath: /
 definitions:
+  handler.CreateSecretRequest:
+    properties:
+      secret:
+        type: string
+    type: object
   handler.CreateUserRequest:
     properties:
       email:
@@ -110,6 +115,53 @@ paths:
       summary: Readiness check
       tags:
       - health
+  /secrets:
+    post:
+      consumes:
+      - application/json
+      description: Create a secret
+      parameters:
+      - description: Secret
+        in: body
+        name: secret
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CreateSecretRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a secret
+      tags:
+      - secrets
+  /secrets/{secretId}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a secret
+      parameters:
+      - description: Secret ID
+        in: path
+        name: secretId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Retrieve a secret
+      tags:
+      - secrets
   /time:
     get:
       consumes:

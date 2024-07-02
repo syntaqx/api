@@ -18,6 +18,7 @@ import (
 	"github.com/syntaqx/api/internal/config"
 	"github.com/syntaqx/api/internal/handler"
 	"github.com/syntaqx/api/internal/model"
+	"github.com/syntaqx/api/internal/repository/memory"
 	"github.com/syntaqx/api/internal/repository/postgres"
 	"github.com/syntaqx/api/internal/router"
 	"github.com/syntaqx/api/internal/service"
@@ -51,10 +52,12 @@ func main() {
 
 	// Initialize repositories
 	userRepository := postgres.NewUserRepository(db)
+	secretRepository := memory.NewSecretRepository()
 
 	// Initialize services
 	weatherService := service.NewWeatherService(cfg)
 	userService := service.NewUserService(userRepository)
+	secretService := service.NewSecretService(secretRepository)
 
 	// Initialize handlers
 	rootHandler := handler.NewRootHandler()
@@ -64,6 +67,7 @@ func main() {
 	usersHandler := handler.NewUsersHandler(userService)
 	gamesHandler := handler.NewGamesHandler()
 	bookmarksHandler := handler.NewBookmarksHandler()
+	secretHandler := handler.NewSecretHandler(secretService)
 
 	// Initialize router
 	r := router.NewRouter(cfg, logger)
@@ -76,6 +80,7 @@ func main() {
 	usersHandler.RegisterRoutes(r)
 	gamesHandler.RegisterRoutes(r)
 	bookmarksHandler.RegisterRoutes(r)
+	secretHandler.RegisterRoutes(r)
 
 	// Static files
 	workDir, _ := os.Getwd()

@@ -88,6 +88,78 @@ const docTemplate = `{
                 }
             }
         },
+        "/secrets": {
+            "post": {
+                "description": "Create a secret",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "secrets"
+                ],
+                "summary": "Create a secret",
+                "parameters": [
+                    {
+                        "description": "Secret",
+                        "name": "secret",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.CreateSecretRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/secrets/{secretId}": {
+            "get": {
+                "description": "Retrieve a secret",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "secrets"
+                ],
+                "summary": "Retrieve a secret",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Secret ID",
+                        "name": "secretId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/time": {
             "get": {
                 "description": "Get the current time",
@@ -300,6 +372,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "handler.CreateSecretRequest": {
+            "type": "object",
+            "properties": {
+                "secret": {
+                    "type": "string"
+                }
+            }
+        },
         "handler.CreateUserRequest": {
             "type": "object",
             "properties": {
