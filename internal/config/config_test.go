@@ -7,6 +7,7 @@ import (
 )
 
 func TestNewConfigDefaults(t *testing.T) {
-	cfg := NewConfig()
+	cfg, err := NewConfig()
+	assert.NoError(t, err)
 	assert.Equal(t, cfg.Port, "8080")
 }

@@ -10,11 +10,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/syntaqx/env"
 	"go.uber.org/zap"
 	pg "gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
+	"github.com/joho/godotenv"
 	"github.com/syntaqx/api/internal/config"
 	"github.com/syntaqx/api/internal/handler"
 	"github.com/syntaqx/api/internal/model"
@@ -30,7 +30,7 @@ func main() {
 	defer cancel()
 
 	// Load dotenv environment variables
-	_ = env.Load()
+	_ = godotenv.Load()
 
 	logger, err := zap.NewProduction()
 	if err != nil {
@@ -39,7 +39,11 @@ func main() {
 	defer logger.Sync()
 
 	// Initialize config
-	cfg := config.NewConfig()
+	cfg, err := config.NewConfig()
+	if err != nil {
+		log.Fatal("failed to load configuration: ", err)
+
+	}
 
 	// Initialize database
 	db, err := gorm.Open(pg.Open(cfg.DatabaseURL), &gorm.Config{})
