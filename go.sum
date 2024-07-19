@@ -77,8 +77,8 @@ github.com/swaggo/http-swagger/v2 v2.0.2 h1:FKCdLsl+sFCx60KFsyM0rDarwiUSZ8DqbfSy
 github.com/swaggo/http-swagger/v2 v2.0.2/go.mod h1:r7/GBkAWIfK6E/OLnE8fXnviHiDeAHmgIyooa4xm3AQ=
 github.com/swaggo/swag v1.16.3 h1:PnCYjPCah8FK4I26l2F/KQ4yz3sILcVUN3cTlBFA9Pg=
 github.com/swaggo/swag v1.16.3/go.mod h1:DImHIuOFXKpMFAQjcC7FG4m3Dg4+QuUgUzJmKjI/gRk=
-github.com/syntaqx/env v0.1.1 h1:PO6MjrgFmpQ9SDpvzwToSVdhuOCbbxK/xAVaGCOMrTU=
-github.com/syntaqx/env v0.1.1/go.mod h1:WdKDB086KxlmVBKlXSy2QgOv+vvlhMlTPV5q6pPRDeU=
+github.com/syntaqx/env v0.2.3 h1:q6y90jVyR3XvyQViSGr7wG/0pr7BHgAMqY7M9CSUghc=
+github.com/syntaqx/env v0.2.3/go.mod h1:WdKDB086KxlmVBKlXSy2QgOv+vvlhMlTPV5q6pPRDeU=
 github.com/syntaqx/zapchi v0.0.0-20240610193050-79db48c38f2d h1:tp+q480wh2Ftxnsuj0PttDDwqARvwYFDUVPvRJk4+8c=
 github.com/syntaqx/zapchi v0.0.0-20240610193050-79db48c38f2d/go.mod h1:DCIMDPOzIkb019Ne6xfVlDr1p5iV+0Y/SjMVtXD8iAM=
 github.com/urfave/cli/v2 v2.3.0 h1:qph92Y649prgesehzOrQjdWyxFOp/QVM+6imKHad91M=
