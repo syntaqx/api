@@ -12,7 +12,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	github.com/swaggo/http-swagger/v2 v2.0.2
 	github.com/swaggo/swag v1.16.3
-	github.com/syntaqx/env v0.1.1
+	github.com/syntaqx/env v0.2.3
 	github.com/syntaqx/zapchi v0.0.0-20240610193050-79db48c38f2d
 	go.uber.org/zap v1.27.0
 	gorm.io/driver/postgres v1.5.9
