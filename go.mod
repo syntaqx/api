@@ -5,7 +5,7 @@ go 1.22.3
 require (
 	github.com/go-chi/chi/v5 v5.1.0
 	github.com/go-chi/render v1.0.3
-	github.com/gofrs/uuid/v5 v5.2.0
+	github.com/gofrs/uuid/v5 v5.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/matryer/moq v0.3.4
 	github.com/rs/cors v1.11.0
