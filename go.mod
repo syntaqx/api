@@ -8,7 +8,7 @@ require (
 	github.com/gofrs/uuid/v5 v5.2.0
 	github.com/joho/godotenv v1.5.1
 	github.com/matryer/moq v0.3.4
-	github.com/rs/cors v1.11.0
+	github.com/rs/cors v1.11.1
 	github.com/stretchr/testify v1.9.0
 	github.com/swaggo/http-swagger/v2 v2.0.2
 	github.com/swaggo/swag v1.16.3
